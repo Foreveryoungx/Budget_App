@@ -8,6 +8,8 @@ import UncategorizedBudgetCard from "./components/UncategorizedBudgetCard"
 import TotalBudgetCard from "./components/TotalBudgetCard"
 import { useState } from "react"
 import { UNCATEGORIZED_BUDGET_ID, useBudgets } from "./contexts/BudgetsContext"
+import {useUser} from "./contexts/UserContext"
+import {useNavigate} from 'react-router-dom';
 
 function App() {
     const [showAddBudgetModal, setShowAddBudgetModal] = useState(false)
@@ -15,17 +17,21 @@ function App() {
     const [viewExpensesModalBudgetId, setViewExpensesModalBudgetId] = useState()
     const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState()
     const { budgets, getBudgetExpenses } = useBudgets()
+    const {user} = useUser()
+    const navigate = useNavigate();
 
     function openAddExpenseModal(budgetId) {
         setShowAddExpenseModal(true)
         setAddExpenseModalBudgetId(budgetId)
     }
-
+if(!user.name){
+    navigate('/')
+}
     return (
         <>
             <Container className="my-4">
                 <Stack direction="horizontal" gap="2" className="mb-4">
-                    <h1 className="me-auto">Budgets</h1>
+                    <h1 className="me-auto">{user.name} Budgets</h1>
                     <Button variant="primary" onClick={() => setShowAddBudgetModal(true)}>
                         Add Budget
                     </Button>
